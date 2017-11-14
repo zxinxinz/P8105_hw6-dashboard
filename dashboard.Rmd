@@ -18,7 +18,7 @@ library(flexdashboard)
 
 Column {data-width=650}
 -----------------------------------------------------------------------
-### Chart A
+### Scatter plot
 ```{r}
 library(rnoaa)
 
@@ -40,14 +40,16 @@ weather =
 ```
 
 ```{r}
-
-          
-
+weather %>% 
+  mutate(hover_text = str_c("Date: ", date,'\nName: ', name)) %>% 
+  plot_ly(x = ~tmin, y = ~tmax, color = ~prcp,
+          text = ~hover_text,
+          type = "scatter", mode = "marker", alpha = 0.5)
 ```
 
 Column {data-width=350}
 -----------------------------------------------------------------------
-### Chart B
+### Bar chart
 
 ```{r}
 weather%>%
@@ -58,6 +60,15 @@ weather%>%
 ```
 
 
+### Box plot
+
+```{r}
+weather %>%
+  mutate(month = fct_reorder(name, prcp),diff_in_t = tmax-tmin) %>%
+  plot_ly(x = ~name, y = ~diff_in_t, color = ~name,
+          colors = "Set2",
+          type = "box") 
+```
 
 
 
